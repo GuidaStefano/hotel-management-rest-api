@@ -8,14 +8,14 @@ import java.util.Date;
 public class Booking {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     private Room room;
 
     @ManyToOne
-    private User user;
+    private Guest guest;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date checkInDate;
@@ -23,9 +23,9 @@ public class Booking {
     @Temporal(TemporalType.TIMESTAMP)
     private Date checkOutDate;
 
-    public Booking(Room room, User user, Date checkInDate, Date checkOutDate) {
+    public Booking(Room room, Guest guest, Date checkInDate, Date checkOutDate) {
         this.room = room;
-        this.user = user;
+        this.guest = guest;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
     }
@@ -42,8 +42,8 @@ public class Booking {
         return room;
     }
 
-    public User getUser() {
-        return user;
+    public Guest getUser() {
+        return guest;
     }
 
     public Date getCheckInDate() {
