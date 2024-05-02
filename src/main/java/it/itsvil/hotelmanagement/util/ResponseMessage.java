@@ -1,7 +1,7 @@
 package it.itsvil.hotelmanagement.util;
 
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 
-public record ResponseMessage(HttpStatusCode statusCode, String errorMessage) {
+public record ResponseMessage(HttpStatus statusCode, String errorMessage) {
 
 }

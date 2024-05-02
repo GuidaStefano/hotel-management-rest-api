@@ -15,7 +15,7 @@ public class Booking {
     private Room room;
 
     @ManyToOne
-    private Guest guest;
+    private User user;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date checkInDate;
@@ -23,9 +23,9 @@ public class Booking {
     @Temporal(TemporalType.TIMESTAMP)
     private Date checkOutDate;
 
-    public Booking(Room room, Guest guest, Date checkInDate, Date checkOutDate) {
+    public Booking(Room room, User user, Date checkInDate, Date checkOutDate) {
         this.room = room;
-        this.guest = guest;
+        this.user = user;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
     }
@@ -42,8 +42,8 @@ public class Booking {
         return room;
     }
 
-    public Guest getUser() {
-        return guest;
+    public User getUser() {
+        return user;
     }
 
     public Date getCheckInDate() {

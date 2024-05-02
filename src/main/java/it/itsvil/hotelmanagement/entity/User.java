@@ -1,12 +1,14 @@
 package it.itsvil.hotelmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Guest {
+@Table(name = "\"user\"")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,10 +26,11 @@ public class Guest {
     @Column(nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "guest")
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private Set<Booking> bookings;
 
-    public Guest(String firstName, String lastName, String email, String password) {
+    public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -35,7 +38,7 @@ public class Guest {
         bookings = new HashSet<>();
     }
 
-    public Guest() {
+    public User() {
 
     }
 

@@ -1,7 +1,7 @@
 package it.itsvil.hotelmanagement.controller;
 
-import it.itsvil.hotelmanagement.entity.Guest;
-import it.itsvil.hotelmanagement.service.GuestService;
+import it.itsvil.hotelmanagement.entity.User;
+import it.itsvil.hotelmanagement.service.UserService;
 import it.itsvil.hotelmanagement.util.LoginRequest;
 import it.itsvil.hotelmanagement.util.ResponseMessage;
 import jakarta.servlet.http.HttpSession;
@@ -10,33 +10,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/guest")
-public class GuestController {
+@RequestMapping("/user")
+public class UserController {
 
-    private final GuestService service;
+    private final UserService service;
 
-    public GuestController(GuestService service) {
+    public UserController(UserService service) {
         this.service = service;
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Guest> signup(@RequestBody Guest guest, HttpSession session) {
+    public ResponseEntity<User> signup(@RequestBody User user, HttpSession session) {
         if (session.getAttribute("user") != null)
             throw new IllegalStateException("already logged in");
 
-        Guest persistedGuest = service.signup(guest);
-        session.setAttribute("user", guest);
-        return ResponseEntity.ok(persistedGuest);
+        User persistedUser = service.signup(user);
+        session.setAttribute("user", user);
+        return ResponseEntity.ok(persistedUser);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Guest> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
+    public ResponseEntity<User> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
         if (session.getAttribute("user") != null)
             throw new IllegalStateException("already logged in");
 
-        Guest guest = service.login(loginRequest.email(), loginRequest.password());
-        session.setAttribute("user", guest);
-        return ResponseEntity.ok(guest);
+        User user = service.login(loginRequest.email(), loginRequest.password());
+        session.setAttribute("user", user);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/logout")
