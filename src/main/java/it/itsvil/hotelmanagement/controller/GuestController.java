@@ -3,7 +3,7 @@ package it.itsvil.hotelmanagement.controller;
 import it.itsvil.hotelmanagement.entity.Guest;
 import it.itsvil.hotelmanagement.service.GuestService;
 import it.itsvil.hotelmanagement.util.LoginRequest;
-import it.itsvil.hotelmanagement.util.RestExceptionWrapper;
+import it.itsvil.hotelmanagement.util.ResponseMessage;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,9 +39,16 @@ public class GuestController {
         return ResponseEntity.ok(guest);
     }
 
+    @GetMapping("/logout")
+    public ResponseEntity<ResponseMessage> logout(HttpSession session) {
+        session.invalidate();
+        ResponseMessage wrapper = new ResponseMessage(HttpStatus.OK, "logged out successfully");
+        return ResponseEntity.status(wrapper.statusCode()).body(wrapper);
+    }
+
     @ExceptionHandler({RuntimeException.class})
-    public ResponseEntity<RestExceptionWrapper> handleRuntimeException(RuntimeException exception) {
-        RestExceptionWrapper wrapper = new RestExceptionWrapper(HttpStatus.BAD_REQUEST, exception.getMessage());
+    public ResponseEntity<ResponseMessage> handleRuntimeException(RuntimeException exception) {
+        ResponseMessage wrapper = new ResponseMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
         return ResponseEntity.status(wrapper.statusCode()).body(wrapper);
     }
 

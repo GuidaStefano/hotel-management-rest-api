@@ -48,6 +48,10 @@ public class Room {
         return maxCapacity;
     }
 
+    public Set<Booking> getBookings() {
+        return bookings;
+    }
+
     public enum Type {
         BASE,
         DELUXE,

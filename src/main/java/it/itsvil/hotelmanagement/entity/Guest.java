@@ -55,4 +55,8 @@ public class Guest {
         return password;
     }
 
+    public Set<Booking> getBookings() {
+        return bookings;
+    }
+
 }
