@@ -4,6 +4,8 @@ import it.itsvil.hotelmanagement.entity.Guest;
 
 public interface GuestService {
 
-    Guest createGuest(Guest guest);
+    Guest signup(Guest guest);
+
+    Guest login(String email, String password);
 
 }

@@ -3,10 +3,12 @@ package it.itsvil.hotelmanagement.service.impl;
 import it.itsvil.hotelmanagement.entity.Guest;
 import it.itsvil.hotelmanagement.repository.GuestRepository;
 import it.itsvil.hotelmanagement.service.GuestService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class GuestServiceImpl implements GuestService {
@@ -23,7 +25,7 @@ public class GuestServiceImpl implements GuestService {
     }
 
     @Override
-    public Guest createGuest(Guest guest) {
+    public Guest signup(Guest guest) {
         Objects.requireNonNull(guest, "payload cannot be null");
         Objects.requireNonNull(guest.getFirstName(), "first name cannot be null");
         Objects.requireNonNull(guest.getLastName(), "last name cannot be null");
@@ -48,6 +50,17 @@ public class GuestServiceImpl implements GuestService {
             throw new IllegalArgumentException("email already exists");
 
         return repository.save(guest);
+    }
+
+    @Override
+    public Guest login(String email, String password) {
+        Guest guest = repository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("user not found"));
+
+        if (!password.equals(guest.getPassword()))
+            throw new IllegalArgumentException("incorrect password");
+
+        return guest;
     }
 
 }

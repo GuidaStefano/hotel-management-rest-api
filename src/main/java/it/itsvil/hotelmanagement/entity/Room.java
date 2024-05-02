@@ -2,6 +2,7 @@ package it.itsvil.hotelmanagement.entity;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -28,6 +29,7 @@ public class Room {
         this.type = type;
         this.pricePerNight = pricePerNight;
         this.maxCapacity = maxCapacity;
+        bookings = new HashSet<>();
     }
 
     public Room() {

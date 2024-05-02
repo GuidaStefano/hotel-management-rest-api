@@ -2,6 +2,7 @@ package it.itsvil.hotelmanagement.entity;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,6 +12,7 @@ public class Guest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String firstName;
 
     @Column(nullable = false)
@@ -30,6 +32,7 @@ public class Guest {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        bookings = new HashSet<>();
     }
 
     public Guest() {
