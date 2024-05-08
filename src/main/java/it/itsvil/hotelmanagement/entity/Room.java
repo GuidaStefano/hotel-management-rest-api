@@ -1,8 +1,11 @@
 package it.itsvil.hotelmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -10,6 +13,7 @@ public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -23,6 +27,7 @@ public class Room {
     private int maxCapacity;
 
     @OneToMany(mappedBy = "room")
+    @JsonIgnore
     private Set<Booking> bookings;
 
     public Room(Type type, double pricePerNight, int maxCapacity) {
@@ -56,6 +61,19 @@ public class Room {
         BASE,
         DELUXE,
         SUITE
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Room room = (Room) o;
+        return Objects.equals(id, room.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 
 }

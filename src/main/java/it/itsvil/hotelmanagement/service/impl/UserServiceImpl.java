@@ -3,6 +3,7 @@ package it.itsvil.hotelmanagement.service.impl;
 import it.itsvil.hotelmanagement.entity.User;
 import it.itsvil.hotelmanagement.repository.UserRepository;
 import it.itsvil.hotelmanagement.service.UserService;
+import it.itsvil.hotelmanagement.wrapper.LoginRequest;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -51,7 +52,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User login(String email, String password) {
+    public User login(LoginRequest loginRequest) {
+        Objects.requireNonNull(loginRequest, "payload cannot be null");
+
+        String email = loginRequest.email();
+        String password = loginRequest.password();
+
+        Objects.requireNonNull(email, "email cannot be null");
+        Objects.requireNonNull(password, "password cannot be null");
+
         User user = repository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("user not found"));
 
