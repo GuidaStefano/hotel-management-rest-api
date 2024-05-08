@@ -4,6 +4,7 @@ import it.itsvil.hotelmanagement.entity.User;
 import it.itsvil.hotelmanagement.service.UserService;
 import it.itsvil.hotelmanagement.wrapper.LoginRequest;
 import it.itsvil.hotelmanagement.wrapper.ResponseMessage;
+import it.itsvil.hotelmanagement.wrapper.SignupRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +21,13 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signup(@RequestBody User user, HttpSession session) {
+    public ResponseEntity<User> signup(@RequestBody SignupRequest signupRequest, HttpSession session) {
         if (session.getAttribute("user") != null)
             throw new IllegalStateException("already logged in");
 
-        User persistedUser = service.signup(user);
+        User user = service.signup(signupRequest);
         session.setAttribute("user", user);
-        return ResponseEntity.ok(persistedUser);
+        return ResponseEntity.ok((user));
     }
 
     @PostMapping("/login")

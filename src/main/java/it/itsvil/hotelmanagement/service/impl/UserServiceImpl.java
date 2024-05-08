@@ -3,11 +3,15 @@ package it.itsvil.hotelmanagement.service.impl;
 import it.itsvil.hotelmanagement.entity.User;
 import it.itsvil.hotelmanagement.repository.UserRepository;
 import it.itsvil.hotelmanagement.service.UserService;
+import it.itsvil.hotelmanagement.util.SecurityUtil;
 import it.itsvil.hotelmanagement.wrapper.LoginRequest;
+import it.itsvil.hotelmanagement.wrapper.SignupRequest;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+
+import static it.itsvil.hotelmanagement.util.SecurityUtil.sha256;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,30 +28,37 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User signup(User user) {
-        Objects.requireNonNull(user, "payload cannot be null");
-        Objects.requireNonNull(user.getFirstName(), "first name cannot be null");
-        Objects.requireNonNull(user.getLastName(), "last name cannot be null");
-        Objects.requireNonNull(user.getEmail(), "email cannot be null");
-        Objects.requireNonNull(user.getPassword(), "password cannot be null");
+    public User signup(SignupRequest signupRequest) {
+        Objects.requireNonNull(signupRequest, "payload cannot be null");
 
-      if (user.getFirstName().length() < MIN_NAME_LENGTH || user.getFirstName().length() > MAX_NAME_LENGTH)
+        String firstName = signupRequest.firstName();
+        String lastName = signupRequest.lastName();
+        String email = signupRequest.email();
+        String password = signupRequest.password();
+
+        Objects.requireNonNull(firstName, "first name cannot be null");
+        Objects.requireNonNull(lastName, "last name cannot be null");
+        Objects.requireNonNull(email, "email cannot be null");
+        Objects.requireNonNull(password, "password cannot be null");
+
+      if (firstName.length() < MIN_NAME_LENGTH || firstName.length() > MAX_NAME_LENGTH)
             throw new IllegalArgumentException(
                     String.format("first name must be between %d and %d characters", MIN_NAME_LENGTH, MAX_NAME_LENGTH));
 
-        if (user.getLastName().length() < MIN_NAME_LENGTH || user.getLastName().length() > MAX_NAME_LENGTH)
+        if (lastName.length() < MIN_NAME_LENGTH || lastName.length() > MAX_NAME_LENGTH)
             throw new IllegalArgumentException(
                     String.format("last name must be between %d and %d characters", MIN_NAME_LENGTH, MAX_NAME_LENGTH));
 
-        if (!user.getEmail().matches(EMAIL_PATTERN))
+        if (!email.matches(EMAIL_PATTERN))
             throw new IllegalArgumentException("invalid email address");
 
-        if (!user.getPassword().matches(PASSWORD_PATTERN))
+        if (!password.matches(PASSWORD_PATTERN))
             throw new IllegalArgumentException("invalid password");
 
-        if (repository.existsByEmail(user.getEmail()))
+        if (repository.existsByEmail(email))
             throw new IllegalArgumentException("email already exists");
 
+        User user = new User(firstName, lastName, email, sha256(password));
         return repository.save(user);
     }
 
@@ -64,7 +75,8 @@ public class UserServiceImpl implements UserService {
         User user = repository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("user not found"));
 
-        if (!password.equals(user.getPassword()))
+        String hash = sha256(password);
+        if (!hash.equals(user.getPassword()))
             throw new IllegalArgumentException("incorrect password");
 
         return user;

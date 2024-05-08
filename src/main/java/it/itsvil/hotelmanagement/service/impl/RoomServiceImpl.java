@@ -38,7 +38,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Set<Room> getAvailableRooms(Date checkInDate, Date checkOutDate) {
         Objects.requireNonNull(checkInDate, "check in date cannot be null");
-        Objects.requireNonNull(checkOutDate, " check out date cannot be null");
+        Objects.requireNonNull(checkOutDate, "check out date cannot be null");
 
         return repository.findAvailableRoomsBetweenDates(checkInDate, checkOutDate);
     }
