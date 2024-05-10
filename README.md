@@ -28,7 +28,3 @@ It provides endpoints for user registration, authentication, room listing, room 
 ## Additional Information
 
 This project is developed for educational purposes. It utilizes Swagger for API documentation, allowing users to explore all features. Unit tests are conducted using JUnit and Mockito.
-
-## Getting Started
-
-To get started with this API, please refer to the documentation provided by Swagger or explore the available endpoints directly. Ensure proper authentication when accessing authenticated endpoints.
