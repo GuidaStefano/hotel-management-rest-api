@@ -3,7 +3,6 @@ package it.itsvil.hotelmanagement.service.impl;
 import it.itsvil.hotelmanagement.entity.User;
 import it.itsvil.hotelmanagement.repository.UserRepository;
 import it.itsvil.hotelmanagement.service.UserService;
-import it.itsvil.hotelmanagement.util.SecurityUtil;
 import it.itsvil.hotelmanagement.wrapper.LoginRequest;
 import it.itsvil.hotelmanagement.wrapper.SignupRequest;
 import jakarta.persistence.EntityNotFoundException;
@@ -16,10 +15,18 @@ import static it.itsvil.hotelmanagement.util.SecurityUtil.sha256;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static final int MIN_NAME_LENGTH = 3;
-    private static final int MAX_NAME_LENGTH = 32;
-    private static final String EMAIL_PATTERN = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
-    private static final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=]).{8,}$";
+    public static final int MIN_NAME_LENGTH = 3;
+    public static final int MAX_NAME_LENGTH = 32;
+    public static final String EMAIL_PATTERN = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+    /*
+    Password pattern:
+    - Contiene almeno una lettera minuscola
+    - Contiene almeno una lettera maiuscola
+    - Contiene almeno una cifra
+    - Contiene almeno uno dei seguenti caratteri speciali: @#$%^&+=
+    - È lungo almeno 8 caratteri
+     */
+    public static final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=]).{8,}$";
 
     private final UserRepository repository;
 
